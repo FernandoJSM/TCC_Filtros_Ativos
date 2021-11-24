@@ -9,7 +9,7 @@ class Config:
     """
         Configuração do problema de otimização
     """
-    N_RUNS = 1     # Quantidade de execuções do algoritmo
+    N_RUNS = 1      # Quantidade de execuções do algoritmo
 
     N_GEN = 1000    # Número de gerações
     N_POP = 100     # Tamanho da população
@@ -27,7 +27,7 @@ class Config:
     QUALITY_FACTOR_2 = 0.7072              # Fator de qualidade 2 para o filtro de resposta Butterworth
     QUALITY_FACTOR_3 = 1.9305              # Fator de qualidade 3 para o filtro de resposta Butterworth
 
-    # Lista de valores de componentes da série E12
+    # Lista de valores de componentes da série E24
     E_SERIES = np.array([1.0, 1.1, 1.2, 1.3, 1.5, 1.6, 1.8, 2.0, 2.2, 2.4, 2.7, 3.0,
                          3.3, 3.6, 3.9, 4.3, 4.7, 5.1, 5.6, 6.2, 6.8, 7.5, 8.2, 9.1])
 
