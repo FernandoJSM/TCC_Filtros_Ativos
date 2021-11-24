@@ -34,4 +34,4 @@ class Config:
 
 if __name__ == "__main__":
     for i in range(Config.N_RUNS):
-        otm_algorithm(output_file="best_result_e24.json", config=Config)
+        otm_algorithm(output_file="../data/best_result_e24.json", config=Config)
