@@ -3,6 +3,22 @@ import random
 import numpy as np
 from decimal import Decimal
 
+E12_SERIES = [1.0, 1.2, 1.5, 1.8, 2.2, 2.7, 3.3, 3.9, 4.7, 5.6, 6.8, 8.2]
+
+# Configuração do problema de otimização
+N_GEN = 1000    # Número de gerações
+N_POP = 100     # Tamanho da população
+N_VAR = 16      # Número de variáveis por indivíduo
+P_CROSS = 0.5   # Probabilidade de cruzamento
+P_MUT = 0.3     # Probabilidade de mutação
+
+LOWER_BOUNDS = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+UPPER_BOUNDS = [11, 11, 11, 11, 11, 11, 11, 11, 1, 1, 1, 1, 3, 3, 3, 3]
+
+CUTOFF_FREQUENCY = 2 * np.pi * 5000     # Frequência de corte em rad/s
+QUALITY_FACTOR_1 = 0.54118              # Fator de qualidade 1 para o filtro de resposta Butterworth
+QUALITY_FACTOR_2 = 1.30651              # Fator de qualidade 2 para o filtro de resposta Butterworth
+
 
 class Optimizer:
     """
@@ -10,16 +26,13 @@ class Optimizer:
     """
 
     @staticmethod
-    def generate_individual(individual_class, n_var, lower_bounds, upper_bounds):
+    def generate_individual(individual_class):
         """
             Gera os indivíduos conforme os limites inferiores e superiores
         Args:
             individual_class (DEAP Class): Classe do DEAP utilizada para definir o indivíduo
-            n_var (int): Tamanho do indivíduo
-            lower_bounds (list): Lista contendo os limites inferiores
-            upper_bounds (list): Lista contendo os limites superiores
         """
-        individual_vars = [random.randint(lower_bounds[i], upper_bounds[i]) for i in range(n_var)]
+        individual_vars = [random.randint(LOWER_BOUNDS[i], UPPER_BOUNDS[i]) for i in range(N_VAR)]
         individual = individual_class(individual_vars)
 
         return individual
@@ -31,16 +44,14 @@ class Optimizer:
         Args:
             individual (list): Indivíduo com as variáveis de projeto
         """
-        E12_series = [1.0, 1.2, 1.5, 1.8, 2.2, 2.7, 3.3, 3.9, 4.7, 5.6, 6.8, 8.2]
-
-        r1 = E12_series[individual[0]] * 1e3 * (10 ** individual[8])
-        r2 = E12_series[individual[1]] * 1e3 * (10 ** individual[9])
-        r3 = E12_series[individual[2]] * 1e3 * (10 ** individual[10])
-        r4 = E12_series[individual[3]] * 1e3 * (10 ** individual[11])
-        c1 = E12_series[individual[4]] * 1e-9 * (10 ** individual[12])
-        c2 = E12_series[individual[5]] * 1e-9 * (10 ** individual[13])
-        c3 = E12_series[individual[6]] * 1e-9 * (10 ** individual[14])
-        c4 = E12_series[individual[7]] * 1e-9 * (10 ** individual[15])
+        r1 = E12_SERIES[individual[0]] * 1e3 * (10 ** individual[8])
+        r2 = E12_SERIES[individual[1]] * 1e3 * (10 ** individual[9])
+        r3 = E12_SERIES[individual[2]] * 1e3 * (10 ** individual[10])
+        r4 = E12_SERIES[individual[3]] * 1e3 * (10 ** individual[11])
+        c1 = E12_SERIES[individual[4]] * 1e-9 * (10 ** individual[12])
+        c2 = E12_SERIES[individual[5]] * 1e-9 * (10 ** individual[13])
+        c3 = E12_SERIES[individual[6]] * 1e-9 * (10 ** individual[14])
+        c4 = E12_SERIES[individual[7]] * 1e-9 * (10 ** individual[15])
 
         wc1 = 1 / np.sqrt(r1 * r2 * c1 * c2)
         wc2 = 1 / np.sqrt(r3 * r4 * c3 * c4)
@@ -51,20 +62,17 @@ class Optimizer:
         return wc1, wc2, q1, q2
 
     @staticmethod
-    def objective_function(individual, cutoff_frequency, quality_factor_1, quality_factor_2):
+    def objective_function(individual):
         """
             Função objetivo do problema, que é o cálculo do erro de frequência e fator de
             qualidade para o filtro passa-baixas com resposta Butterworth
         Args:
             individual (list): Indivíduo com as variáveis de projeto
-            cutoff_frequency (float): Frequência de corte em rad/s
-            quality_factor_1 (float): Fator de qualidade 1 para o filtro de resposta Butterworth
-            quality_factor_2 (float): Fator de qualidade 2 para o filtro de resposta Butterworth
         """
         wc1, wc2, q1, q2 = Optimizer.low_pass_calc(individual)
 
-        deviation_wc = (np.abs(wc1 - cutoff_frequency) + np.abs(wc2 - cutoff_frequency)) / cutoff_frequency
-        deviation_q = np.abs(q1 - quality_factor_1) + np.abs(q2 - quality_factor_2)
+        deviation_wc = (np.abs(wc1 - CUTOFF_FREQUENCY) + np.abs(wc2 - CUTOFF_FREQUENCY)) / CUTOFF_FREQUENCY
+        deviation_q = np.abs(q1 - QUALITY_FACTOR_1) + np.abs(q2 - QUALITY_FACTOR_2)
 
         f_obj = 0.5*deviation_wc + 0.5*deviation_q
 
@@ -78,16 +86,14 @@ class Optimizer:
         Args:
             individual (list): Indivíduo com as variáveis de projeto
         """
-        E12_series = [1.0, 1.2, 1.5, 1.8, 2.2, 2.7, 3.3, 3.9, 4.7, 5.6, 6.8, 8.2]
-
-        r1 = E12_series[individual[0]] * 1e3 * (10 ** individual[8])
-        r2 = E12_series[individual[1]] * 1e3 * (10 ** individual[9])
-        r3 = E12_series[individual[2]] * 1e3 * (10 ** individual[10])
-        r4 = E12_series[individual[3]] * 1e3 * (10 ** individual[11])
-        c1 = E12_series[individual[4]] * 1e-9 * (10 ** individual[12])
-        c2 = E12_series[individual[5]] * 1e-9 * (10 ** individual[13])
-        c3 = E12_series[individual[6]] * 1e-9 * (10 ** individual[14])
-        c4 = E12_series[individual[7]] * 1e-9 * (10 ** individual[15])
+        r1 = E12_SERIES[individual[0]] * 1e3 * (10 ** individual[8])
+        r2 = E12_SERIES[individual[1]] * 1e3 * (10 ** individual[9])
+        r3 = E12_SERIES[individual[2]] * 1e3 * (10 ** individual[10])
+        r4 = E12_SERIES[individual[3]] * 1e3 * (10 ** individual[11])
+        c1 = E12_SERIES[individual[4]] * 1e-9 * (10 ** individual[12])
+        c2 = E12_SERIES[individual[5]] * 1e-9 * (10 ** individual[13])
+        c3 = E12_SERIES[individual[6]] * 1e-9 * (10 ** individual[14])
+        c4 = E12_SERIES[individual[7]] * 1e-9 * (10 ** individual[15])
 
         wc1, wc2, _, _ = Optimizer.low_pass_calc(individual)
 
@@ -106,41 +112,23 @@ class Optimizer:
 
 
 def main():
-    # Configuração do problema de otimização
-    n_gen = 1000    # Número de gerações
-    n_pop = 100     # Tamanho da população
-    n_var = 16      # Número de variáveis por indivíduo
-    p_cross = 0.5   # Probabilidade de cruzamento
-    p_mut = 0.3     # Probabilidade de mutação
-
-    lower_bounds = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    upper_bounds = [11, 11, 11, 11, 11, 11, 11, 11, 1, 1, 1, 1, 3, 3, 3, 3]
-
-    cutoff_frequency = 2 * np.pi * 5000     # Frequência de corte em rad/s
-    quality_factor_1 = 0.54118              # Fator de qualidade 1 para o filtro de resposta Butterworth
-    quality_factor_2 = 1.30651              # Fator de qualidade 2 para o filtro de resposta Butterworth
-
-    # ---
-
     creator.create(name="FitnessMin", base=base.Fitness, weights=(-1.0,))
     creator.create(name="Individual", base=list, fitness=creator.FitnessMin)
 
     # Inicializando estruturas:
     toolbox = base.Toolbox()
     toolbox.register(alias="individual", function=Optimizer.generate_individual,
-                     individual_class=creator.Individual, n_var=n_var, lower_bounds=lower_bounds,
-                     upper_bounds=upper_bounds)
+                     individual_class=creator.Individual)
     toolbox.register(alias="population", function=tools.initRepeat, container=list, func=toolbox.individual)
 
-    toolbox.register(alias="evaluate", function=Optimizer.objective_function, cutoff_frequency=cutoff_frequency,
-                     quality_factor_1=quality_factor_1, quality_factor_2=quality_factor_2)
+    toolbox.register(alias="evaluate", function=Optimizer.objective_function)
 
     # Definição dos operadores
     toolbox.register("mate", tools.cxTwoPoint)
     toolbox.register("mutate", tools.mutShuffleIndexes, indpb=0.05)
     toolbox.register("select", tools.selTournament, tournsize=3)
 
-    pop = toolbox.population(n=n_pop)
+    pop = toolbox.population(n=N_POP)
     fitnesses = list(map(toolbox.evaluate, pop))
     for ind, fit in zip(pop, fitnesses):
         ind.fitness.values = fit
@@ -151,8 +139,8 @@ def main():
     stats.register("std", np.std)
     stats.register("min", np.min)
 
-    algorithms.eaSimple(population=pop, toolbox=toolbox, cxpb=p_cross,
-                        mutpb=p_mut, ngen=n_gen, stats=stats,
+    algorithms.eaSimple(population=pop, toolbox=toolbox, cxpb=P_CROSS,
+                        mutpb=P_MUT, ngen=N_GEN, stats=stats,
                         halloffame=hof)
     print(hof[0])
     Optimizer.print_ind(hof[0])
