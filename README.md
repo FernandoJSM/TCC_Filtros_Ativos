@@ -12,14 +12,11 @@ de atender os requisitos de projeto do filtro ativo.
 ## 1.1 Otimização
 ## 1.2 Equações dos filtros ativos
 ## 1.3 Resultados
-### 1.3.1 Algoritmo A
-### 1.3.2 Algoritmo B
-### 1.3.3 Comparativo
+### 1.3.1 Algoritmo
 ### 1.3.3 Simulações
 
 # 2. Requisitos Python
-- Python 3.9+
-- Jupyter Notebook
+- Python 3.9+ (Pode funcionar em versões mais antigas, mas não foi testado)
 - Bibliotecas do arquivo ./Python/requirements.txt
 
 # 3. Referências bibliográficas
