@@ -8,7 +8,7 @@ relação de valores de componentes eletrônicos (resistores e capacitores) a fi
 de atender os requisitos de projeto do filtro ativo.
 
 # 1. Funcionamento
-
+Ícones Python, deap e numpy
 ## 1.1 Otimização
 ## 1.2 Equações dos filtros ativos
 ## 1.3 Resultados
