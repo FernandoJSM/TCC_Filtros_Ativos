@@ -178,6 +178,6 @@ TEXT -242 152 Left 2 !.ac dec 1e3 1 {MAX_FREQ}"""
 
 
 if __name__ == "__main__":
-    data_path = "./best_result.json"
+    data_path = "best_result_e48.json"
     output_path = "../LTspiceSchematics/6th Order Sallen Key Lowpass Filter.asc"
     write_file(data_path=data_path, output_path=output_path)

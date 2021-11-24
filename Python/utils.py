@@ -17,7 +17,8 @@ def save_file(output_file, logbook, best_ind):
     new_data = {
         "hist": hist,
         "best_fitness": hist[-1],
-        "best_individual": best_ind
+        "best_individual": best_ind,
+        "n_evals": sum(logbook.select("nevals"))
     }
 
     if os.path.exists(output_file):
@@ -25,7 +26,7 @@ def save_file(output_file, logbook, best_ind):
             stored_data = json.load(f)
 
         if hist[-1] < stored_data.get("best_fitness", np.inf):
-            print("Novo ótimo encontrado!")
+            print("\n\u001b[34mNovo ótimo encontrado!\u001b[0m")
         else:
             return
 
