@@ -1,10 +1,10 @@
-# Projeto de filtros ativos utilizando técnicas de otimização
+# Projeto de filtros ativos utilizando algoritmo evolucionário
 
 Trabalho de conclusão do curso para obtenção de certificado no Curso de Especialização – Latu Sensu em
 Engenharia de Desenvolvimento de Projetos Eletrônicos da União Brasileira de Faculdades, UniBF.
 
-O trabalho consiste em aplicar técnicas de otimização para o projeto de filtros ativos, buscando obter a melhor
-relação de valores de componentes eletrônicos (resistores e capacitores) a fim
+O trabalho consiste em aplicar algoritmo evolucionário para o projeto de filtros ativos, buscando obter a melhor
+relação de valores de componentes eletrônicos (resistores e capacitores) disponíveis comercialmente a fim
 de atender os requisitos de projeto do filtro ativo.
 
 # 1. Funcionamento
