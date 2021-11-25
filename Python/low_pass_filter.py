@@ -58,21 +58,17 @@ class LowPassFilter:
             individual (list): Indivíduo com as variáveis de projeto
 
         """
-        r1 = self.config.E_SERIES[individual[0]] * 1e3 * (10 ** individual[12])
-        r2 = self.config.E_SERIES[individual[1]] * 1e3 * (10 ** individual[13])
-        r3 = self.config.E_SERIES[individual[2]] * 1e3 * (10 ** individual[14])
-        r4 = self.config.E_SERIES[individual[3]] * 1e3 * (10 ** individual[15])
-        r5 = self.config.E_SERIES[individual[4]] * 1e3 * (10 ** individual[16])
-        r6 = self.config.E_SERIES[individual[5]] * 1e3 * (10 ** individual[17])
+        r1 = self.config.E_SERIES[individual[0]] * 1e3 * (10 ** individual[8])
+        r2 = self.config.E_SERIES[individual[1]] * 1e3 * (10 ** individual[9])
+        r3 = self.config.E_SERIES[individual[2]] * 1e3 * (10 ** individual[10])
+        r4 = self.config.E_SERIES[individual[3]] * 1e3 * (10 ** individual[11])
 
-        c1 = self.config.E_SERIES[individual[6]] * 1e-9 * (10 ** individual[18])
-        c2 = self.config.E_SERIES[individual[7]] * 1e-9 * (10 ** individual[19])
-        c3 = self.config.E_SERIES[individual[8]] * 1e-9 * (10 ** individual[20])
-        c4 = self.config.E_SERIES[individual[9]] * 1e-9 * (10 ** individual[21])
-        c5 = self.config.E_SERIES[individual[10]] * 1e-9 * (10 ** individual[22])
-        c6 = self.config.E_SERIES[individual[11]] * 1e-9 * (10 ** individual[23])
+        c1 = self.config.E_SERIES[individual[4]] * 1e-9 * (10 ** individual[12])
+        c2 = self.config.E_SERIES[individual[5]] * 1e-9 * (10 ** individual[13])
+        c3 = self.config.E_SERIES[individual[6]] * 1e-9 * (10 ** individual[14])
+        c4 = self.config.E_SERIES[individual[7]] * 1e-9 * (10 ** individual[15])
 
-        return r1, r2, r3, r4, r5, r6, c1, c2, c3, c4, c5, c6
+        return r1, r2, r3, r4, c1, c2, c3, c4
 
     def low_pass_calc(self, individual):
         """
@@ -80,17 +76,15 @@ class LowPassFilter:
         Args:
             individual (list): Indivíduo com as variáveis de projeto
         """
-        r1, r2, r3, r4, r5, r6, c1, c2, c3, c4, c5, c6 = self.calculate_values(individual=individual)
+        r1, r2, r3, r4, c1, c2, c3, c4 = self.calculate_values(individual=individual)
 
         wc1 = 1 / np.sqrt(r1 * r2 * c1 * c2)
         wc2 = 1 / np.sqrt(r3 * r4 * c3 * c4)
-        wc3 = 1 / np.sqrt(r5 * r6 * c5 * c6)
 
         q1 = np.sqrt(r1 * r2 * c1 * c2) / (r1 * c1 + r2 * c1)
         q2 = np.sqrt(r3 * r4 * c3 * c4) / (r3 * c3 + r4 * c3)
-        q3 = np.sqrt(r5 * r6 * c5 * c6) / (r5 * c5 + r6 * c5)
 
-        return wc1, wc2, wc3, q1, q2, q3
+        return wc1, wc2, q1, q2
 
     def objective_function_output(self, individual):
         """
@@ -98,14 +92,12 @@ class LowPassFilter:
         Args:
             individual (list): Indivíduo com as variáveis de projeto
         """
-        wc1, wc2, wc3, q1, q2, q3 = self.low_pass_calc(individual=individual)
+        wc1, wc2, q1, q2 = self.low_pass_calc(individual=individual)
 
         deviation_wc = (np.abs(wc1 - self.config.CUTOFF_FREQUENCY) +
-                        np.abs(wc2 - self.config.CUTOFF_FREQUENCY) +
-                        np.abs(wc3 - self.config.CUTOFF_FREQUENCY)) / self.config.CUTOFF_FREQUENCY
+                        np.abs(wc2 - self.config.CUTOFF_FREQUENCY)) / self.config.CUTOFF_FREQUENCY
         deviation_q = np.abs(q1 - self.config.QUALITY_FACTOR_1) + \
-                      np.abs(q2 - self.config.QUALITY_FACTOR_2) + \
-                      np.abs(q3 - self.config.QUALITY_FACTOR_2)
+                      np.abs(q2 - self.config.QUALITY_FACTOR_2)
 
         f_obj = 0.5 * deviation_wc + 0.5 * deviation_q
 
@@ -129,11 +121,9 @@ class LowPassFilter:
             individual (list): Indivíduo com as variáveis de projeto
         """
         component_raw_values = self.calculate_values(individual=individual)
-        r1, r2, r3, r4, r5, r6, c1, c2, c3, c4, c5, c6 = (
+        r1, r2, r3, r4, c1, c2, c3, c4 = (
             utils.to_si(value=v) for v in component_raw_values
         )
-
-        wc1, wc2, wc3, q1, q2, q3 = self.low_pass_calc(individual=individual)
 
         print("\nDados do indivíduo:")
         print(f"R1 = {r1} ohms")
@@ -145,11 +135,6 @@ class LowPassFilter:
         print(f"R4 = {r4} ohms")
         print(f"C3 = {c3} farads")
         print(f"C4 = {c4} farads")
-
-        print(f"R5 = {r5} ohms")
-        print(f"R6 = {r6} ohms")
-        print(f"C5 = {c5} farads")
-        print(f"C6 = {c6} farads")
 
         f_obj, deviation_wc, deviation_q = self.objective_function_output(individual=individual)
 

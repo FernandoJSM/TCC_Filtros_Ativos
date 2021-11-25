@@ -1,4 +1,3 @@
-"""Otimização de um filtro ativo passa-baixas Sallen-Key Butterworth de 6a ordem"""
 from dataclasses import dataclass
 from Python.optimizer import otm_algorithm
 import numpy as np
@@ -13,19 +12,18 @@ class Config:
 
     N_GEN = 1000    # Número de gerações
     N_POP = 100     # Tamanho da população
-    N_VAR = 24      # Número de variáveis por indivíduo
+    N_VAR = 16      # Número de variáveis por indivíduo
     P_CROSS = 0.5   # Probabilidade de cruzamento
     P_MUT = 0.2     # Probabilidade de mutação
 
-    LOWER_BOUNDS = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])   # Limites inferiores
-    UPPER_BOUNDS = np.array([47, 47, 47, 47, 47, 47, 47, 47, 47, 47, 47, 47,
-                             1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 3, 3])   # Limites superiores
+    LOWER_BOUNDS = np.array([0, 0, 0, 0, 0, 0, 0, 0,
+                             0, 0, 0, 0, 0, 0, 0, 0])  # Limites inferiores
+    UPPER_BOUNDS = np.array([47, 47, 47, 47, 47, 47, 47, 47,
+                             1, 1, 1, 1, 3, 3, 3, 3])  # Limites superiores
 
-    CUTOFF_FREQUENCY = 2 * np.pi * 5000    # Frequência de corte em rad/s
-    QUALITY_FACTOR_1 = 0.5176              # Fator de qualidade 1 para o filtro de resposta Butterworth
-    QUALITY_FACTOR_2 = 0.7072              # Fator de qualidade 2 para o filtro de resposta Butterworth
-    QUALITY_FACTOR_3 = 1.9305              # Fator de qualidade 3 para o filtro de resposta Butterworth
+    CUTOFF_FREQUENCY = 2 * np.pi * 5000  # Frequência de corte em rad/s
+    QUALITY_FACTOR_1 = 0.54113  # Fator de qualidade 1 para o filtro de resposta Butterworth de 4a ordem
+    QUALITY_FACTOR_2 = 1.30719  # Fator de qualidade 2 para o filtro de resposta Butterworth de 4a ordem
 
     # Lista de valores de componentes da série E48
     E_SERIES = np.array([1.00, 1.05, 1.10, 1.15, 1.21, 1.27, 1.33, 1.40, 1.47, 1.54,

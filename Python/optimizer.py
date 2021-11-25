@@ -29,7 +29,7 @@ def otm_algorithm(output_file, config):
                                                            distance=otm_base.distance))
 
     # Definição dos operadores
-    toolbox.register("mate", tools.cxUniform, indpb=0.3)
+    toolbox.register("mate", tools.cxUniform, indpb=0.5)
     toolbox.register("mutate", tools.mutUniformInt, low=list(config.LOWER_BOUNDS),
                      up=list(config.UPPER_BOUNDS), indpb=0.1)
     toolbox.register("select", tools.selTournament, tournsize=3)
