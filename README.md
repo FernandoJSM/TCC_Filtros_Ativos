@@ -5,8 +5,9 @@ Engenharia de Desenvolvimento de Projetos Eletrônicos da União Brasileira de F
 
 O trabalho consiste em aplicar algoritmo evolucionário para o projeto de filtros ativos, buscando obter a melhor
 relação de valores de componentes eletrônicos (resistores e capacitores) disponíveis comercialmente a fim
-de atender os requisitos de projeto do filtro ativo. Aqui está uma versão bem resumida e simplificada do trabalho
-submetido.
+de atender os requisitos de projeto do filtro ativo. 
+
+**Aqui está uma versão bem resumida e simplificada do trabalho submetido.**
 
 # 1. Metodologia e Resultados
 
