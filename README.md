@@ -26,7 +26,7 @@ eletrônicos seguem o padrão [E Series](http://en.wikipedia.org/wiki/E_series_o
 possui uma sequência de valores base que é multiplicada por uma potência de 10 para obter o valor do componente.
 
 <p align="center">
-<img src="ReadmeFiles/TabelaESeries.png" class="img-responsive" alt="Tabela E Series" width="500px"></p>
+<img src="ReadmeFiles/Tabela_ESeries.png" class="img-responsive" alt="Tabela E Series" width="500px"></p>
 
 ## 1.1 Equações dos filtros ativos
 
@@ -42,7 +42,7 @@ Para a escolha dos componentes de cada estágio do filtro, é necessário que os
 satisfaçam as seguintes equações:
 
 <p align="center">
-<img src="ReadmeFiles/Eq_filtros.png" class="img-responsive" alt="Equações filtros" 
+<img src="ReadmeFiles/Eq_Filtros.png" class="img-responsive" alt="Equações filtros" 
 width="136px">
 </p>
 
